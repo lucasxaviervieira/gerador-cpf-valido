@@ -9,19 +9,19 @@ class App:
         cpfs_mascara = [self.cpf_com_mascara(i) for i in self.cpfs]
         print(cpfs_mascara) if tem_mascara else print(self.cpfs)
 
-    def pega_produtos(self, cpf_em_lista, range):
+    def produtos(self, cpf_em_lista, range):
         fatores = [i for i in range][::-1]
         multiplicadores = zip(cpf_em_lista, fatores)
         produtos = [int(i[0]) * i[1] for i in multiplicadores]
         return produtos
 
     def dv1(self, cpf):
-        produtos = self.pega_produtos(cpf, range(2, 11))
+        produtos = self.produtos(cpf, range(2, 11))
         dv1 = (sum(produtos) * 10) % 11
         return 0 if dv1 == 10 else dv1
 
     def dv2(self, cpf):
-        produtos = self.pega_produtos(cpf, range(3, 12))
+        produtos = self.produtos(cpf, range(3, 12))
         dv1_contagem = self.dv1(cpf)
         dv2 = ((sum(produtos) + (dv1_contagem * 2)) * 10) % 11
         return 0 if dv2 == 10 else dv2
@@ -33,19 +33,18 @@ class App:
 
     def gera_cpf(self):
         numeros = [str(i) for i in range(0, 10)]
-        cpf, c = [], 0
+        cpf, c = "", 0
         while c < 11:
-            cpf.append(choice(numeros))
+            cpf += choice(numeros)
             c += 1
-        return "".join(cpf)
+        return cpf
 
     def gera_cpf_valido(self):
         while True:
             novo_cpf = self.gera_cpf()
             cpf_valido = self.valida_cpf(novo_cpf)
             if cpf_valido:
-                break
-        return novo_cpf
+                return novo_cpf
 
     def gera_lista_cpfs(self, qtd):
         c = 0
@@ -61,8 +60,8 @@ class App:
 
 if __name__ == "__main__":
     app = App()
-    x_cpfs = int(input("Quantos CPF's vocẽ deseja gerar? "))
-    app.gera_lista_cpfs(x_cpfs)
+    n_cpfs = int(input("Quantos CPF's vocẽ deseja gerar? "))
+    app.gera_lista_cpfs(n_cpfs)
     while True:
         tem_mascara = input("CPF's com máscara? (S/N) ").lower()
         if tem_mascara == "s":
